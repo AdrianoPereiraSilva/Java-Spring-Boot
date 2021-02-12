@@ -1,1 +1,1 @@
-INSERT INTO user VALUES (1, '', '', '');
+INSERT INTO user VALUES ('teste@email1.com', 'dGVzdGUxMjM=', 'SAHSUAHSUAHSAUHSAUHS', 'username_teste', 'Name Teste');

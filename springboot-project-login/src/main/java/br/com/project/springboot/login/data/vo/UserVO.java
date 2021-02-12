@@ -3,6 +3,7 @@ package br.com.project.springboot.login.data.vo;
 public class UserVO {
 	
 	private Long id;
+	private String name;
 	private String userName;
 	private String password;
 	private String email;
@@ -19,6 +20,12 @@ public class UserVO {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getPassword() {
 		return password;
