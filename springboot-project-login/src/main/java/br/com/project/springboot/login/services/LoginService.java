@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import br.com.project.springboot.login.converters.DozerConverter;
@@ -13,6 +14,7 @@ import br.com.project.springboot.login.repositories.LoginRepository;
 import br.com.project.springboot.login.util.Encrypt;
 
 @Service
+@Profile("!fake_login")
 public class LoginService {
 
 	@Autowired
