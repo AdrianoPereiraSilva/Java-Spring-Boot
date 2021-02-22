@@ -32,13 +32,4 @@ public class LoginService {
 		
 		return vo;
 	}
-	
-	public UserVO registerUser(UserVO user) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-		
-		var entity = DozerConverter.parseObject(user, User.class);
-		entity.setPassword(Encrypt.encrypt(user.getPassword()));
-		var vo = DozerConverter.parseObject(repository.save(entity), UserVO.class);
-		return vo;
-	}
-	
 }
