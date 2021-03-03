@@ -10,6 +10,7 @@
   <groupId>br.com.project.springboot.login</groupId>
   <artifactId>springboot-maven</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,7 +25,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-data-rest</artifactId>
 	</dependency>
-	
+		
 	<!-- for JPA Support -->
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
@@ -62,6 +63,7 @@
 		<groupId>org.flywaydb</groupId>
 		<artifactId>flyway-core</artifactId>
 	</dependency>
+
 	
   </dependencies>
   
