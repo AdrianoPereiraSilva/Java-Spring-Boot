@@ -44,14 +44,12 @@ public class LoginServiceTest {
         when(repository.findUserByEmailAndPassword(expectedUserRequest.getEmail(), expectedUserUserVoResponse.getPassword()))
                 .thenReturn(expectedUserResponse);
 
+        expectedUserUserVoResponse.setPassword(null);
+
         // then
         UserVO founderUserVO = loginService.findUserByEmailAndPassword(expectedUserUserVoRequest);
 
-        assertEquals(founderUserVO.getUserName(), expectedUserUserVoResponse.getUserName());
-        assertEquals(founderUserVO.getEmail(), expectedUserUserVoResponse.getEmail());
-        assertEquals(founderUserVO.getId(), expectedUserUserVoResponse.getId());
-        assertEquals(founderUserVO.getName(), expectedUserUserVoResponse.getName());
-        assertEquals(founderUserVO.getToken(), expectedUserUserVoResponse.getToken());
+        assertEquals(founderUserVO, expectedUserUserVoResponse);
 
     }
 
