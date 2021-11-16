@@ -25,7 +25,7 @@ public class LoginController {
 	@PostMapping
 	public ResponseEntity<UserVO> login(@RequestBody UserVO user) {
 		
-		UserVO userReturn = new UserVO();
+		UserVO userReturn = null;
 		try {
 			userReturn = service.findUserByEmailAndPassword(user);
 		} catch (NoSuchAlgorithmException e) {
