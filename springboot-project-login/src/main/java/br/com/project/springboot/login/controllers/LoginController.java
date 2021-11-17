@@ -23,18 +23,8 @@ public class LoginController {
 	LoginService service;
 	
 	@PostMapping
-	public ResponseEntity<UserVO> login(@RequestBody UserVO user) {
-		
-		UserVO userReturn = null;
-		try {
-			userReturn = service.findUserByEmailAndPassword(user);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		
-		return new ResponseEntity<UserVO>(userReturn, HttpStatus.OK);
+	public ResponseEntity<UserVO> login(@RequestBody UserVO user) throws Exception {
+		return ResponseEntity.ok(service.findUserByEmailAndPasswordOrThrows(user));
 	}
 	
 	@GetMapping("/greetings")
