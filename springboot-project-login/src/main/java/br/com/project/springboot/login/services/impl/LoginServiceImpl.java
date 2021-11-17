@@ -1,8 +1,6 @@
 package br.com.project.springboot.login.services.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-
+import br.com.project.springboot.login.dto.UserResponseDTO;
 import br.com.project.springboot.login.exception.ConverterException;
 import br.com.project.springboot.login.exception.UserNotFoundException;
 import br.com.project.springboot.login.services.LoginService;
@@ -11,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.project.springboot.login.converters.DozerConverter;
-import br.com.project.springboot.login.data.vo.UserVO;
+import br.com.project.springboot.login.dto.UserRequestDTO;
 import br.com.project.springboot.login.model.User;
 import br.com.project.springboot.login.repositories.LoginRepository;
 import br.com.project.springboot.login.util.Encrypt;
@@ -23,7 +21,7 @@ public class LoginServiceImpl implements LoginService {
 	private final LoginRepository repository;
 
 	@Override
-	public UserVO findUserByEmailAndPasswordOrThrows(UserVO user) throws Exception {
+	public UserResponseDTO findUserByEmailAndPasswordOrThrows(UserRequestDTO user) throws Exception {
 		User entity;
 		try {
 			entity = DozerConverter.parseObject(user, User.class);
@@ -39,11 +37,9 @@ public class LoginServiceImpl implements LoginService {
 			throw new UserNotFoundException("Usuário não encontrado");
 		}
 
-		var vo = DozerConverter.parseObject(userReturned, UserVO.class);
+		var responseDTO = DozerConverter.parseObject(userReturned, UserResponseDTO.class);
 
-		vo.setPassword(null);
-
-		return vo;
+		return responseDTO;
 	}
 
 }

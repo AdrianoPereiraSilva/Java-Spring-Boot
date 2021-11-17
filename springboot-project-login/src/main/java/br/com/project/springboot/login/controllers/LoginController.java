@@ -1,5 +1,6 @@
 package br.com.project.springboot.login.controllers;
 
+import br.com.project.springboot.login.dto.UserResponseDTO;
 import br.com.project.springboot.login.services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.project.springboot.login.data.vo.UserVO;
-import br.com.project.springboot.login.services.impl.LoginServiceImpl;
+import br.com.project.springboot.login.dto.UserRequestDTO;
 
 @RestController
 @RequestMapping("/api/login/v1")
@@ -20,7 +20,7 @@ public class LoginController {
 	LoginService service;
 	
 	@PostMapping
-	public ResponseEntity<UserVO> login(@RequestBody UserVO user) throws Exception {
+	public ResponseEntity<UserResponseDTO> login(@RequestBody UserRequestDTO user) throws Exception {
 		return ResponseEntity.ok(service.findUserByEmailAndPasswordOrThrows(user));
 	}
 	

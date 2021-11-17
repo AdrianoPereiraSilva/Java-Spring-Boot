@@ -1,12 +1,10 @@
 package br.com.project.springboot.login.builders;
 
 
-import br.com.project.springboot.login.data.vo.UserVO;
+import br.com.project.springboot.login.dto.UserRequestDTO;
+import br.com.project.springboot.login.dto.UserResponseDTO;
 import br.com.project.springboot.login.util.Encrypt;
 import lombok.Builder;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 
 @Builder
 public class UserVOBuilder {
@@ -16,6 +14,9 @@ public class UserVOBuilder {
 
     @Builder.Default
     private String email = "teste@email1.com";
+
+    @Builder.Default
+    private String invalidEmail = "invalid@email1.com";
 
     @Builder.Default
     private String name = "Teste";
@@ -29,9 +30,9 @@ public class UserVOBuilder {
     @Builder.Default
     private String token = "SAHSUAHSUHASUHAUHSUAHS";
 
-    public UserVO createMockVoRequest() {
+    public UserRequestDTO createMockVoRequest() {
 
-        return UserVO.builder()
+        return UserRequestDTO.builder()
                 .id(id)
                 .email(email)
                 .name(name)
@@ -41,14 +42,24 @@ public class UserVOBuilder {
                 .build();
     }
 
-    public UserVO createMockVoResponse() throws Exception {
+    public UserRequestDTO createMockVoRequestInvalidEmail() {
 
-        return UserVO.builder()
+        return UserRequestDTO.builder()
+                .id(id)
+                .email(invalidEmail)
+                .name(name)
+                .password(password)
+                .userName(userName)
+                .token(token)
+                .build();
+    }
+
+    public UserResponseDTO createMockVoResponse() throws Exception {
+
+        return UserResponseDTO.builder()
                 .id(id)
                 .email(email)
                 .name(name)
-                .password(Encrypt.encrypt(password))
-                //.password(password)
                 .userName(userName)
                 .token(token)
                 .build();
