@@ -1,4 +1,4 @@
-package br.com.project.springboot.login.data.vo;
+package br.com.project.springboot.login.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserVO {
+public class UserDTO {
 	
 	private Long id;
 	private String name;
