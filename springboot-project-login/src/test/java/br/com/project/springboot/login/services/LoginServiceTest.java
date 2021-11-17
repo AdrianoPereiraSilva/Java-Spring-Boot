@@ -1,74 +1,66 @@
 package br.com.project.springboot.login.services;
 
-import br.com.project.springboot.login.builders.UserVOBuilder;
-import br.com.project.springboot.login.converters.DozerConverter;
-import br.com.project.springboot.login.data.vo.UserVO;
-import br.com.project.springboot.login.exception.ConverterException;
+import br.com.project.springboot.login.dto.UserRequestDTO;
+import br.com.project.springboot.login.dto.UserResponseDTO;
+import br.com.project.springboot.login.exception.UserNotFoundException;
 import br.com.project.springboot.login.model.User;
 import br.com.project.springboot.login.repositories.LoginRepository;
 
+import br.com.project.springboot.login.services.impl.LoginServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
-import java.util.Optional;
-
+import static br.com.project.springboot.login.builders.UserDTOBuilder.*;
+import static br.com.project.springboot.login.converters.DozerConverter.parseObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles({"test"})
+@SpringBootTest()
 public class LoginServiceTest {
 
     @Mock
     private LoginRepository repository;
 
-    @InjectMocks
-    private LoginService loginService;
+    @Autowired
+    private LoginServiceImpl loginService;
 
     @Test
     void whenUserInformedCorrectlyThenShouldBeReturnedUser() throws Exception {
 
-        // given
-        UserVO expectedUserUserVoRequest = UserVOBuilder.builder().build().createMockVoRequest();
-        UserVO expectedUserUserVoResponse = UserVOBuilder.builder().build().createMockVoResponse();
+        UserRequestDTO expectedUserUserVoRequest = createMockVoRequest();
+        UserResponseDTO expectedUserUserVoResponse = createMockVoResponse();
 
-        User expectedUserRequest = DozerConverter.parseObject(expectedUserUserVoRequest, User.class);
-        User expectedUserResponse = DozerConverter.parseObject(expectedUserUserVoResponse, User.class);
+        User expectedUserRequest = parseObject(expectedUserUserVoRequest, User.class);
+        User expectedUserResponse = parseObject(expectedUserUserVoResponse, User.class);
 
-        // when
-        when(repository.findUserByEmailAndPassword(expectedUserRequest.getEmail(), expectedUserUserVoResponse.getPassword()))
+        when(repository.findUserByEmailAndPassword(expectedUserRequest.getEmail(), expectedUserUserVoRequest.getPassword()))
                 .thenReturn(expectedUserResponse);
 
-        expectedUserUserVoResponse.setPassword(null);
-
-        // then
-        UserVO founderUserVO = loginService.findUserByEmailAndPassword(expectedUserUserVoRequest);
+        UserResponseDTO founderUserVO = loginService.findUserByEmailAndPasswordOrThrows(expectedUserUserVoRequest);
 
         assertEquals(founderUserVO, expectedUserUserVoResponse);
 
     }
 
     @Test
-    void whenUserEmailInformedIsInvalidShouldBeReturnedConverterException() throws Exception {
-        // given
-        UserVO expectedUserUserVoRequest = UserVOBuilder.builder().build().createMockVoRequest();
-        UserVO expectedUserUserVoResponse = UserVOBuilder.builder().build().createMockVoResponse();
-        expectedUserUserVoRequest.setEmail("invalid@email.com");
+    void whenUserEmailInformedIsInvalidShouldBeReturnedUserNotFoundException() throws Exception {
 
-        User expectedUserRequest = DozerConverter.parseObject(expectedUserUserVoRequest, User.class);
+        UserRequestDTO expectedUserUserVoRequest = createMockVoRequestInvalidEmail();
+        User expectedUserRequest = parseObject(expectedUserUserVoRequest, User.class);
 
-        // when
-        when(repository.findUserByEmailAndPassword(expectedUserRequest.getEmail(), expectedUserUserVoResponse.getPassword()))
+        when(repository.findUserByEmailAndPassword(expectedUserRequest.getEmail(), expectedUserUserVoRequest.getPassword()))
                 .thenReturn(null);
 
-        // then
-        assertThrows(ConverterException.class, () -> loginService.findUserByEmailAndPassword(expectedUserUserVoRequest));
-
+        assertThrows(UserNotFoundException.class, () -> loginService.findUserByEmailAndPasswordOrThrows(expectedUserUserVoRequest));
     }
 
 }
